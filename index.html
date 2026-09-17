@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8f9fb" />
+    <title>근무 이력 · 프론트엔드 개발자, AI와 함께 일하다</title>
+  </head>
+  <body>
+    <div id="readiness" class="readiness" role="dialog" aria-label="발표 시작" aria-modal="true" aria-busy="true" tabindex="-1">
+      <div class="readiness-content">
+        <div id="loading-battery" class="battery-meter" role="progressbar" aria-label="발표 자료 준비" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <span class="battery-cell"></span><span class="battery-cell"></span><span class="battery-cell"></span><span class="battery-cell"></span><span class="battery-cell"></span><span class="battery-cell"></span><span class="battery-cell"></span>
+        </div>
+        <span id="loading-percent" class="loading-percent" aria-hidden="true">0%</span>
+        <p id="readiness-status" class="sr-only" role="status">발표 자료 준비 중</p>
+      </div>
+    </div>
+    <div id="career-intro" class="career-intro" role="dialog" aria-label="근무 연혁 소개" aria-modal="true" tabindex="-1" hidden>
+      <div class="walker-scene" aria-hidden="true"><div id="pixel-walker" class="pixel-walker"></div></div>
+      <p class="sr-only">서류가방을 든 캐릭터가 걸어갑니다. 화면 클릭, 오른쪽 방향키, 스페이스 또는 엔터로 근무 연혁 지도를 열 수 있습니다.</p>
+    </div>
+    <main class="reveal" aria-label="발표 자료" inert>
+      <div class="slides">
+        <section id="career" class="career-slide" data-stage="0" aria-label="근무 이력 지도">
+          <div class="slide-topline">
+            <span class="date-range">2016 <span aria-hidden="true">-</span> 현재</span>
+            <span class="map-key"><span class="key-pin" aria-hidden="true"></span> 근무지 <span class="key-area" aria-hidden="true"></span> 활동 지역</span>
+          </div>
+          <div id="career-map" class="map-container"></div>
+          <div class="history-panel" aria-label="근무 이력">
+            <article class="history-entry fragment" data-fragment-index="0" data-history="1">
+              <div class="history-meta"><span class="history-index">01</span><time>2016.11 - 2019.07</time></div>
+              <div class="history-heading"><h2>Exntu</h2><span class="history-note">첫 근무</span></div>
+            </article>
+            <article class="history-entry fragment" data-fragment-index="1" data-history="2">
+              <div class="history-meta"><span class="history-index">02</span><time>2019.08 - 2020.05</time></div>
+              <div class="history-heading"><h2>KINX</h2></div>
+            </article>
+            <article class="history-entry fragment" data-fragment-index="2" data-history="3">
+              <div class="history-meta"><span class="history-index">03</span><time>2020.05 - 현재</time></div>
+              <div class="history-heading"><h2>프리랜서</h2><span class="current-badge">현재</span></div>
+            </article>
+          </div>
+          <footer class="slide-footer">
+            <span aria-hidden="true"></span>
+            <nav class="presentation-controls" aria-label="발표 조작">
+              <button id="reset" type="button" aria-label="연혁 처음부터">↺ <span>처음부터</span></button>
+              <span class="controls-divider" aria-hidden="true"></span>
+              <button id="previous" type="button" aria-label="이전 근무 이력">←</button>
+              <span id="step-count" class="step-count" aria-live="off">00 / 03</span>
+              <button id="next" type="button" aria-label="다음 근무 이력">→</button>
+            </nav>
+          </footer>
+          <aside class="notes">2016년 11월 판교의 Exntu에서 처음 근무했습니다. 2019년 8월에는 강남의 KINX로 옮겼고, 2020년 5월부터 지금까지는 주로 분당에서 프리랜서로 일하고 있습니다. 현재 하는 프론트엔드 업무 소개로 이어갑니다.</aside>
+        </section>
+      </div>
+    </main>
+    <p id="career-announcement" class="sr-only" role="status" aria-live="polite"></p>
+    <noscript>이 발표는 JavaScript를 사용합니다. 전체 이력은 함께 제공된 PDF에서 확인할 수 있습니다.</noscript>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,95 @@
+<style>
+  @font-face { font-family: 'Compare Wanted'; font-style: normal; font-weight: 400 950; font-display: swap; src: url('https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@02c9b822349c188ada95f9e2d90c2ed18f853235/packages/wanted-sans/fonts/webfonts/variable/complete/woff2/WantedSansVariable.woff2') format('woff2'); }
+  @font-face { font-family: 'Compare SUIT'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@55118d981336d8fce005eb62888c12c0568ef7b0/fonts/variable/woff2/SUIT-Variable.woff2') format('woff2'); }
+  @font-face { font-family: 'Compare Neo'; font-style: normal; font-weight: 300 900; font-display: swap; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2'); }
+  @font-face { font-family: 'Compare Pretendard'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2/PretendardVariable.woff2') format('woff2'); }
+  #talk-font-comparison { --sample-title-size: 30px; --sample-title-weight: 700; --sample-body-weight: 500; color: #182538; font-family: system-ui, sans-serif; }
+  #talk-font-comparison * { box-sizing: border-box; }
+  #talk-font-comparison .specimen { padding: 22px 24px 24px; background: #f8f9fb; }
+  #talk-font-comparison .specimen + .specimen { border-top: 1px solid #dce2ea; }
+  #talk-font-comparison .font-label { display: flex; align-items: baseline; flex-wrap: wrap; column-gap: 12px; row-gap: 4px; margin-bottom: 16px; font-size: 13px; line-height: 1.5; }
+  #talk-font-comparison .font-label a { color: #245ed5; font-weight: 650; text-decoration: none; }
+  #talk-font-comparison .font-label span { color: #586778; }
+  #talk-font-comparison .sample { font-synthesis: none; word-break: keep-all; overflow-wrap: anywhere; }
+  #talk-font-comparison .sample-title { margin: 0 0 10px; color: #182538; font-family: inherit; font-size: var(--sample-title-size); font-weight: var(--sample-title-weight); line-height: 1.4; letter-spacing: 0; }
+  #talk-font-comparison .sample-body { margin: 0 0 10px; font-size: 18px; line-height: 1.65; font-weight: var(--sample-body-weight); color: #354357; }
+  #talk-font-comparison .sample-meta { margin: 0; color: #536479; font-size: 15px; font-weight: 500; line-height: 1.6; }
+  #talk-font-comparison .wanted { font-family: 'Compare Wanted', sans-serif; }
+  #talk-font-comparison .suit { font-family: 'Compare SUIT', sans-serif; }
+  #talk-font-comparison .neo { font-family: 'Compare Neo', sans-serif; }
+  #talk-font-comparison .pretendard { font-family: 'Compare Pretendard', sans-serif; }
+  #talk-font-comparison .font-status { margin: 8px 0 0; font-family: system-ui, sans-serif; font-size: 13px; color: #586778; }
+  #talk-font-comparison .font-status[hidden] { display: none; }
+  @media (max-width: 480px) {
+    #talk-font-comparison .specimen { padding: 20px 16px; }
+    #talk-font-comparison .sample-title { font-size: min(var(--sample-title-size), 25px); }
+    #talk-font-comparison .sample-body { font-size: 17px; }
+  }
+</style>
+<div id="talk-font-comparison" lang="ko" aria-label="발표용 글꼴 비교">
+  <section class="specimen" aria-label="Wanted Sans 견본">
+    <div class="font-label"><a href="https://github.com/wanteddev/wanted-sans" target="_blank" rel="noopener noreferrer">01 · Wanted Sans</a><span>추천 · 단정하고 부드러운 인상</span></div>
+    <div class="sample wanted">
+      <h2 class="sample-title">프론트엔드 개발자, AI와 함께 일하다</h2>
+      <p class="sample-body">시작의 벽은 낮아졌지만,<br>판단하기 위한 지식은 여전히 필요합니다.</p>
+      <p class="sample-meta">Exntu · KINX · 프리랜서 &nbsp; / &nbsp; 2016.11–현재 · 서울 · 판교 · 분당</p>
+    </div>
+  </section>
+  <section class="specimen" aria-label="나눔스퀘어 네오 견본">
+    <div class="font-label"><a href="https://campaign.naver.com/nanumsquare_neo/" target="_blank" rel="noopener noreferrer">02 · 나눔스퀘어 네오</a><span>친근하고 또렷한 한글</span></div>
+    <div class="sample neo">
+      <h2 class="sample-title">프론트엔드 개발자, AI와 함께 일하다</h2>
+      <p class="sample-body">시작의 벽은 낮아졌지만,<br>판단하기 위한 지식은 여전히 필요합니다.</p>
+      <p class="sample-meta">Exntu · KINX · 프리랜서 &nbsp; / &nbsp; 2016.11–현재 · 서울 · 판교 · 분당</p>
+    </div>
+  </section>
+  <section class="specimen" aria-label="SUIT 견본">
+    <div class="font-label"><a href="https://github.com/sun-typeface/SUIT" target="_blank" rel="noopener noreferrer">03 · SUIT</a><span>차분하고 정돈된 인상</span></div>
+    <div class="sample suit">
+      <h2 class="sample-title">프론트엔드 개발자, AI와 함께 일하다</h2>
+      <p class="sample-body">시작의 벽은 낮아졌지만,<br>판단하기 위한 지식은 여전히 필요합니다.</p>
+      <p class="sample-meta">Exntu · KINX · 프리랜서 &nbsp; / &nbsp; 2016.11–현재 · 서울 · 판교 · 분당</p>
+    </div>
+  </section>
+  <section class="specimen" aria-label="현재 Pretendard 견본">
+    <div class="font-label"><a href="https://github.com/orioncactus/pretendard" target="_blank" rel="noopener noreferrer">04 · Pretendard</a><span>현재 글꼴 · 비교 기준</span></div>
+    <div class="sample pretendard">
+      <h2 class="sample-title">프론트엔드 개발자, AI와 함께 일하다</h2>
+      <p class="sample-body">시작의 벽은 낮아졌지만,<br>판단하기 위한 지식은 여전히 필요합니다.</p>
+      <p class="sample-meta">Exntu · KINX · 프리랜서 &nbsp; / &nbsp; 2016.11–현재 · 서울 · 판교 · 분당</p>
+    </div>
+  </section>
+  <p class="font-status" role="status" aria-live="polite">글꼴 불러오는 중…</p>
+</div>
+<script>
+(() => {
+  const root = document.getElementById('talk-font-comparison');
+  const appearance = { titleSize: 30, titleWeight: 700, bodyWeight: 500 };
+  const fontNames = ['Compare Wanted', 'Compare Neo', 'Compare SUIT', 'Compare Pretendard'];
+  const fontSample = '프론트엔드 AI 2016';
+  const status = root.querySelector('.font-status');
+  const failureMessage = '일부 글꼴을 불러오지 못했습니다. 인터넷 연결 후 다시 열어주세요.';
+  function render() {
+    root.style.setProperty('--sample-title-size', `${appearance.titleSize}px`);
+    root.style.setProperty('--sample-title-weight', appearance.titleWeight);
+    root.style.setProperty('--sample-body-weight', appearance.bodyWeight);
+  }
+  render();
+  if (globalThis.Tweak) {
+    const tweak = new Tweak({ container: root, onChange: render });
+    tweak.addSlider(appearance, 'titleSize', { label: '제목 크기', min: 26, max: 40, step: 1, unit: 'px' });
+    tweak.addSlider(appearance, 'titleWeight', { label: '제목 굵기', min: 500, max: 800, step: 100 });
+    tweak.addSlider(appearance, 'bodyWeight', { label: '본문 굵기', min: 400, max: 600, step: 100 });
+  }
+  Promise.all(fontNames.map(name => document.fonts.load(`700 30px "${name}"`, fontSample)))
+    .then(results => {
+      if (results.some(faces => faces.length === 0)) {
+        status.textContent = failureMessage;
+        return;
+      }
+      status.hidden = true;
+      root.dataset.fontsReady = 'true';
+    })
+    .catch(() => { status.textContent = failureMessage; });
+})();
+</script>
