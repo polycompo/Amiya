@@ -16,9 +16,46 @@
         <p id="readiness-status" class="sr-only" role="status">발표 자료 준비 중</p>
       </div>
     </div>
-    <div id="career-intro" class="career-intro" role="dialog" aria-label="근무 연혁 소개" aria-modal="true" tabindex="-1" hidden>
-      <div class="walker-scene" aria-hidden="true"><div id="pixel-walker" class="pixel-walker"></div></div>
-      <p class="sr-only">서류가방을 든 캐릭터가 걸어갑니다. 화면 클릭, 오른쪽 방향키, 스페이스 또는 엔터로 근무 연혁 지도를 열 수 있습니다.</p>
+    <div id="career-origin" class="career-origin" role="dialog" aria-label="진로 선택 이야기" aria-modal="true" data-origin-stage="idle" tabindex="-1" hidden>
+      <div class="origin-scene">
+        <button id="computer-choice" class="origin-choice origin-choice-computer" type="button" aria-label="컴퓨터를 선택합니다">
+          <span class="origin-choice-icon origin-monitor" aria-hidden="true">
+            <svg viewBox="0 0 120 108" focusable="false">
+              <rect x="9" y="8" width="102" height="70" rx="8"></rect>
+              <path d="M44 99h32M60 78v21"></path>
+              <path class="monitor-glow" d="M23 22h74v42H23z"></path>
+            </svg>
+          </span>
+        </button>
+
+        <div class="origin-character-stage">
+          <div class="origin-facts" aria-hidden="true">
+            <span class="origin-fact origin-gpa"><span id="origin-gpa">3.26</span></span>
+            <span class="origin-fact origin-gamepad" aria-label="컴퓨터 게임을 좋아함">
+              <svg viewBox="0 0 96 64" focusable="false">
+                <path d="M28 14h40c11 0 17 8 20 20l3 13c2 9-8 15-14 8L66 44H30L19 55c-6 7-16 1-14-8l3-13c3-12 9-20 20-20Z"></path>
+                <path d="M25 25v14M18 32h14M65 29h.1M76 37h.1"></path>
+              </svg>
+            </span>
+          </div>
+          <div id="origin-character" class="origin-character" aria-hidden="true">
+            <img id="origin-character-image" alt="" draggable="false" />
+          </div>
+          <button id="graduation-cap" class="graduation-cap" type="button" aria-label="학사모를 눌러 진로 선택을 봅니다">
+          </button>
+        </div>
+
+        <button id="major-choice" class="origin-choice origin-choice-major" type="button" aria-label="전공 살리기를 선택합니다">
+          <span class="origin-choice-icon" aria-hidden="true">
+            <svg viewBox="0 0 120 108" focusable="false">
+              <path d="M48 10h24M53 10v30L27 82c-5 9 1 16 11 16h44c10 0 16-7 11-16L67 40V10"></path>
+              <path class="flask-fill" d="M37 77h46l10 16H27l10-16Z"></path>
+              <circle cx="47" cy="69" r="4"></circle><circle cx="67" cy="78" r="5"></circle>
+            </svg>
+          </span>
+        </button>
+      </div>
+      <p id="origin-announcement" class="sr-only" role="status" aria-live="polite">학사모를 눌러 이야기를 시작하세요.</p>
     </div>
     <main class="reveal" aria-label="발표 자료" inert>
       <div class="slides">

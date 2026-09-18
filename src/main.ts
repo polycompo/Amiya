@@ -3,7 +3,7 @@ import Notes from 'reveal.js/plugin/notes/notes.esm.js';
 import 'reveal.js/dist/reveal.css';
 import './styles.css';
 import mapSvg from './assets/career-map.svg?raw';
-import walkerSvg from './assets/pixel-walker.svg?raw';
+import thinkingUrl from './assets/career-origin-thinking.png';
 
 const PRESENTATION_WIDTH = 1440;
 const PRESENTATION_HEIGHT = 810;
@@ -16,6 +16,7 @@ const TOTAL_STEPS = 3;
 const PRINT_QUERY = 'print-pdf';
 const SPEAKER_RECEIVER_QUERY = 'receiver';
 const CHARGE_DURATION_MS = 2200;
+const CHOICES_DELAY_MS = 900;
 const FULL_CHARGE = 100;
 const PENDING_CHARGE_LIMIT = 90;
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
@@ -31,7 +32,9 @@ const SELECTORS = {
   status: '#readiness-status', previous: '#previous', next: '#next',
   reset: '#reset', count: '#step-count', announcement: '#career-announcement',
   entries: '.history-entry', mapEvents: '[data-map-step]',
-  intro: '#career-intro', walker: '#pixel-walker',
+  origin: '#career-origin', originCharacterImage: '#origin-character-image', cap: '#graduation-cap',
+  computerChoice: '#computer-choice', majorChoice: '#major-choice',
+  originAnnouncement: '#origin-announcement',
 };
 
 function requireElement<T extends Element>(selector: string): T {
@@ -43,7 +46,12 @@ function requireElement<T extends Element>(selector: string): T {
 const root = requireElement<HTMLElement>(SELECTORS.deck);
 const slide = requireElement<HTMLElement>(SELECTORS.slide);
 const readiness = requireElement<HTMLElement>(SELECTORS.readiness);
-const intro = requireElement<HTMLElement>(SELECTORS.intro);
+const origin = requireElement<HTMLElement>(SELECTORS.origin);
+const originCharacterImage = requireElement<HTMLImageElement>(SELECTORS.originCharacterImage);
+const capButton = requireElement<HTMLButtonElement>(SELECTORS.cap);
+const computerChoice = requireElement<HTMLButtonElement>(SELECTORS.computerChoice);
+const majorChoice = requireElement<HTMLButtonElement>(SELECTORS.majorChoice);
+const originAnnouncement = requireElement<HTMLElement>(SELECTORS.originAnnouncement);
 const battery = requireElement<HTMLElement>(SELECTORS.battery);
 const batteryCells = [...document.querySelectorAll<HTMLElement>(SELECTORS.cells)];
 const loadingPercentage = requireElement<HTMLElement>(SELECTORS.percentage);
@@ -56,11 +64,17 @@ const entries = [...document.querySelectorAll<HTMLElement>(SELECTORS.entries)];
 const viewParameters = new URLSearchParams(window.location.search);
 const printMode = viewParameters.has(PRINT_QUERY);
 const speakerReceiver = viewParameters.has(SPEAKER_RECEIVER_QUERY);
-type OpeningPhase = 'loading' | 'intro' | 'career';
-const runtime = { phase: 'loading' as OpeningPhase, printing: printMode, ready: false, chargeFrame: 0 };
+type OpeningPhase = 'loading' | 'originIdle' | 'originFacts' | 'originChoices' | 'career';
+const runtime = {
+  phase: 'loading' as OpeningPhase,
+  printing: printMode,
+  ready: false,
+  chargeFrame: 0,
+  originTimer: 0,
+};
 
 requireElement<HTMLElement>(SELECTORS.map).innerHTML = mapSvg;
-requireElement<HTMLElement>(SELECTORS.walker).innerHTML = walkerSvg;
+originCharacterImage.src = thinkingUrl;
 const mapEvents = [...document.querySelectorAll<SVGElement>(SELECTORS.mapEvents)];
 document.documentElement.classList.toggle('print-mode', printMode);
 
@@ -110,7 +124,7 @@ function syncCareerView(): void {
     entry.setAttribute('aria-hidden', String(!runtime.printing && !isCurrent));
   });
   previousButton.disabled = stage === INITIAL_STAGE;
-  resetButton.disabled = stage === INITIAL_STAGE;
+  resetButton.disabled = false;
   nextButton.disabled = stage === TOTAL_STEPS && deck.isLastSlide();
   stepCount.textContent = `${String(stage).padStart(2, '0')} / ${String(TOTAL_STEPS).padStart(2, '0')}`;
   announcement.textContent = stage === INITIAL_STAGE
@@ -134,13 +148,17 @@ function resetCareer(): void {
   if (runtime.printing) return;
   deck.slide(FIRST_SLIDE, FIRST_ROW, INITIAL_FRAGMENT);
   syncCareerView();
+  document.body.classList.remove('has-started');
+  root.inert = true;
+  showOrigin('originIdle');
 }
 
 function beginPresentation(): void {
   if (!runtime.ready || runtime.phase === 'career') return;
+  window.clearTimeout(runtime.originTimer);
   runtime.phase = 'career';
   readiness.hidden = true;
-  intro.hidden = true;
+  origin.hidden = true;
   root.inert = false;
   document.body.classList.add('has-started');
   slide.tabIndex = PROGRAMMATIC_FOCUS_TAB_INDEX;
@@ -148,21 +166,90 @@ function beginPresentation(): void {
   syncCareerView();
 }
 
-function advanceOpening(): void {
-  if (!runtime.ready || runtime.printing || runtime.phase === 'career') return;
-  if (runtime.phase === 'loading') {
-    runtime.phase = 'intro';
-    readiness.hidden = true;
-    intro.hidden = false;
-    intro.focus({ preventScroll: true });
-    return;
-  }
-  beginPresentation();
+function setOriginControlsDisabled(disabled: boolean): void {
+  capButton.disabled = disabled;
+  computerChoice.disabled = disabled;
+  majorChoice.disabled = disabled;
 }
+
+function showOrigin(phase: Extract<OpeningPhase, 'originIdle' | 'originChoices'> = 'originIdle'): void {
+  window.clearTimeout(runtime.originTimer);
+  runtime.phase = phase;
+  originCharacterImage.src = thinkingUrl;
+  readiness.hidden = true;
+  origin.hidden = false;
+  origin.dataset.originStage = phase === 'originIdle' ? 'idle' : 'choices';
+  setOriginControlsDisabled(false);
+  capButton.hidden = phase !== 'originIdle';
+  originAnnouncement.textContent = phase === 'originIdle'
+    ? '학사모를 눌러 이야기를 시작하세요.'
+    : '캐릭터를 컴퓨터 아이콘으로 드래그한 뒤 놓아주세요.';
+  origin.focus({ preventScroll: true });
+}
+
+function advanceOpening(): void {
+  if (!runtime.ready || runtime.printing || runtime.phase !== 'loading') return;
+  showOrigin();
+}
+
+function revealChoices(): void {
+  if (runtime.phase !== 'originIdle') return;
+  runtime.phase = 'originFacts';
+  origin.dataset.originStage = 'facts';
+  capButton.hidden = true;
+  origin.focus({ preventScroll: true });
+  originAnnouncement.textContent = '학점은 3.26, 취미는 컴퓨터 게임입니다.';
+  runtime.originTimer = window.setTimeout(() => showOrigin('originChoices'), CHOICES_DELAY_MS);
+}
+
+const character = requireElement<HTMLElement>('#origin-character');
+let drag: { id: number; x: number; y: number } | null = null;
+
+function clearDrag(): void {
+  drag = null;
+  character.style.transform = '';
+  origin.classList.remove('is-dragging');
+  delete origin.dataset.dropTarget;
+}
+
+function moveCharacter(event: PointerEvent): void {
+  if (!drag || event.pointerId !== drag.id) return;
+  character.style.transform = `translate(${event.clientX - drag.x}px, ${event.clientY - drag.y}px)`;
+  const bounds = character.getBoundingClientRect();
+  const centerX = bounds.x + bounds.width / 2;
+  const centerY = bounds.y + bounds.height / 2;
+  const target = [computerChoice, majorChoice].find((choice) => {
+    const icon = choice.querySelector('.origin-choice-icon')!.getBoundingClientRect();
+    return centerX >= icon.left - 24 && centerX <= icon.right + 24
+      && centerY >= icon.top - 40 && centerY <= icon.bottom + 40;
+  });
+  origin.dataset.dropTarget = target === computerChoice ? 'computer' : target === majorChoice ? 'major' : '';
+}
+
+character.addEventListener('pointerdown', (event) => {
+  if (runtime.phase !== 'originChoices' || event.button !== 0 || drag) return;
+  event.preventDefault();
+  drag = { id: event.pointerId, x: event.clientX, y: event.clientY };
+  character.setPointerCapture(event.pointerId);
+  origin.classList.add('is-dragging');
+});
+character.addEventListener('pointermove', moveCharacter);
+character.addEventListener('pointerup', (event) => {
+  if (!drag || event.pointerId !== drag.id) return;
+  moveCharacter(event);
+  const accepted = origin.dataset.dropTarget === 'computer';
+  clearDrag();
+  if (accepted) beginPresentation();
+});
+character.addEventListener('pointercancel', clearDrag);
+character.addEventListener('lostpointercapture', clearDrag);
+window.addEventListener('blur', clearDrag);
 
 function beginOnKey(event: KeyboardEvent): void {
   if (runtime.phase === 'career' || runtime.printing) return;
   if (!START_KEYS.has(event.key)) return;
+  const target = event.target;
+  if (target instanceof Element && target.closest('#career-origin button')) return;
   event.preventDefault();
   event.stopImmediatePropagation();
   if (event.repeat) return;
@@ -230,7 +317,7 @@ async function preparePresentation(): Promise<void> {
 }
 
 readiness.addEventListener('click', advanceOpening);
-intro.addEventListener('click', advanceOpening);
+capButton.addEventListener('click', revealChoices);
 window.addEventListener('keydown', beginOnKey, { capture: true });
 nextButton.addEventListener('click', nextStep);
 previousButton.addEventListener('click', previousStep);

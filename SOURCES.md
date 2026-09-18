@@ -29,6 +29,6 @@ Original source license text:
 
 ## Presentation content
 
-- `src/assets/pixel-walker.svg` is original pixel artwork created for this presentation, with eight horizontal 48×56 frames. CSS displays one frame at a time; it has no remote assets or runtime dependencies.
+- `src/assets/career-origin-thinking.png` and `src/assets/thought-bubble.png` are transparent 3D assets generated for this presentation with OpenAI's built-in image generation tool from user-provided references. They are bundled locally and have no remote runtime dependency.
 
 The user supplied all employer names, dates, and work regions. No company source code, project screen, internal URL, semiconductor design data, or external API is included.
